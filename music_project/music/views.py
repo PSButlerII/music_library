@@ -1,3 +1,4 @@
+from django.db.migrations import serializer
 from django.http import Http404
 
 from .models import Song
@@ -5,12 +6,13 @@ from .serializers import SongSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import render
 
 
 # Create your views here.
 class SongList(APIView):
 
-    def get(selfself, request):
+    def get(self, request):
         song = Song.objects.all()
         serializer = SongSerializer(song, many=True)
         return Response(serializer.data)
@@ -33,17 +35,19 @@ class SongDetail(APIView):
     def get(self, request, pk):
         song = self.get_object(pk)
         serializer = SongSerializer(Song)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
         song = self.get_object(pk)
         serializer = SongSerializer(song, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         song = self.get_object(pk)
         song.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.data, status=status.HTTP_200_OK, )
+
+
