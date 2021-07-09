@@ -8,4 +8,10 @@ class Song(models.Model):
     album = models.CharField(max_length=50)
     release_date = models.DateTimeField()
 
+# CRUD
+# Create / insert / add - POST
+# Retrieve / fetch - GET
+# Update / edit - PUT
+# Delete / remove - DELETE
+
 
